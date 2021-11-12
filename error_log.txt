@@ -1,0 +1,16 @@
+## ex 10
+- cannot use single quotes w/ \t
+
+# NOTES
+note: "\t* is great for bullet lists"
+
+ex 16
+File methods
+- readline - reads one line of file
+- truncate - empties file
+- seek(0) - Moves the read/write location to begining of fle
+- open modes:
+    - r read
+    - w write
+    - a append
+    - r/w/a+ : + modifier allows read and write and positions file
