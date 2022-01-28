@@ -1,9 +1,6 @@
-# takes a string
-# splits into list of tokens
-# each token is a struct
-# has a type and value
+# takes in a string-ified function
+# puts out a list of Tokens, each with type and value
 
-# required to use r'' syntax
 import re
 
 # TODOLATER: instead of using a new class/object,
@@ -11,7 +8,7 @@ import re
 
 # use a list of tuples
 # tuples are immutable strings
-# does Token need access or only Tokenizer?
+# only Tokenizer needs access
 TOKEN_TYPES = [('def', r'\bdef\b'), ('end', r'\bend\b'),
                ('identifier', r'\b[a-zA-z]+\b'), ('integer', r'\b[0-9]+\b'),
                ('oparen', r'\('), ('cparen', r'\)'), ('comma', r',')]
@@ -37,8 +34,8 @@ class Tokenizer(object):
             self.tokenize_one_token()
 
         # FOR TESTING
-        for token in self.tokens:
-            print(f"token_value: {token.value} AND token_type: {token.type}")
+        # for token in self.tokens:
+        #     print(f"token_value: {token.value} AND token_type: {token.type}")
 
         return self.tokens
 
