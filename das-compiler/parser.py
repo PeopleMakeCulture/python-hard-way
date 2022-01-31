@@ -1,7 +1,5 @@
-# takes in a list of Tokens
-# puts out a tree of Nodes
-
-# from tokenize import Token # is this necessary?
+# Input: list of Tokens
+# Ouput: a tree of Nodes
 
 # Def nodes are function defs
 class DefNode(object):
@@ -33,53 +31,99 @@ class VarRefNode(object):
 # Main
 class Parser(object):
     def __init__(self, token_list):
-        self.token_list = token_list
+        self.token_list = token_list # do we need to cast list(token_list) ?
 
     def peek(self, expected_type, offset=0):
         return self.token_list[offset].type == expected_type
 
-    # Python doesn't have a list shift method
+    # destructively returns next token (eg "token_list[0]")
+    # NOTE: Python doesn't have a list shift method
     def consume(self, expected_type):
-        # this should do the same thing as `.shift()`
+        # this does the same thing as `.shift()`
         current_token = self.token_list[0]
-        token_list = self.token_list[1:]
-
+        self.token_list = self.token_list[1:]
         if current_token.type == expected_type:
             return current_token
         else:
             # print(f"Exoected token type {expected_type} but got {current_token.type}")
             # better error handling
-            raise RuntimeError(f"Exoected token type {expected_type} but got {current_token.type}")
+            raise RuntimeError(f"Expected token type {expected_type} but got {current_token.type}")
+
+    #TODO: this was just for testing -can remove later
+    def print_token_list(self):
+        # print(self.token_list)
+        for token in self.token_list:
+            print(f"token_value: {token.value} AND token_type: {token.type}")
 
     # returns parse tree
     def parse(self):
-        # print(self.token_list)
-        # for token in token_list:
-        #     print(f"token_value: {token.value} AND token_type: {token.type}")
-        while self.token_list:
-            if self.peek('def'): # if next token is def
-                yield self.parse_def() # are we sure yield > return?
-            else:
-                yield self.parse_call()
+        parse_tree = self.parse_def()
+        # print(parse_tree)
+        return parse_tree
+        #TODOLATER: can we add more logic here to differetiate parse def vs parse function call?
 
-
-    # don't remember what this does
+    # called by parse
+    # returns a DefNode
     def parse_def(self):
+        self.consume('def')
+
+        name = self.consume('identifier').value # name of function
+        arg_names = self.parse_arg_names()
+        body = self.parse_expr()
+
+        self.consume('end')
+
+        new_def_node = DefNode(name, arg_names, body)
+        return new_def_node
 
 
-    def parse_arg_names(self, arg_names):
-        pass
+    # called by parse_def
+    # returns list of an arbitrary # of arg names
+        """
+        # after consuming oparen, keep consuming identifiers and commas
+        # after last comma and identifier, consume cparens
+        """
+    def parse_arg_names(self):
 
+        self.consume('oparen')
+
+        arg_names = []
+        if self.peek('identifier'):
+            arg_names.append(self.consume('identifier').value)
+            while self.peek('comma'):
+                self.consume('comma')
+                arg_names.append(self.consume('identifier').value)
+
+        self.consume('cparen')
+        return arg_names
+
+    # called by parse_def
+    # recursively returns sub-tree of nodes to represent function expression
     def parse_expr(self):
-        pass
+        if self.peek('integer'):
+            return self.parse_int() # simplest case for now
+        elif self.peek('identifier') and self.peek('oparen', 1):
+            return self.parse_function_call()
+        else:
+            return self.parse_var_ref # HUH?
+
+############################################################
+# TODO: PARSE FUNCTION CALL
+
+    # called in parse_expr
+    def parse_function_call(self):
+        name = self.consume('identifier').value
+        #TODO: WORK ON PARSE_EXPRESSION
+
+        new_call_node = CallNode(name, arg_exprs)
+        return new_call_node
+
+############################################################
 
     def parse_int(self):
-        # am I constructing node types? I think YES
-        # do I return this?
-        IntegerNode(value)  # cast as python int
-
-    def parse_call(self):
-        CallNode(value, exprs)
+        new_int_node = IntegerNode(int(self.consume('integer').value))
+        return new_int_node
 
     def parse_var_ref(self):
-        VarRefNode(name)
+        name = self.consume('identifier').value
+        return VarRefNode(name)
