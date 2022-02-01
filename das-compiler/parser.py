@@ -31,7 +31,7 @@ class VarRefNode(object):
 # Main
 class Parser(object):
     def __init__(self, token_list):
-        self.token_list = token_list # do we need to cast list(token_list) ?
+        self.token_list = token_list
 
     def peek(self, expected_type, offset=0):
         return self.token_list[offset].type == expected_type
@@ -51,7 +51,7 @@ class Parser(object):
 
     #TODO: this was just for testing -can remove later
     def print_token_list(self):
-        # print(self.token_list)
+        print("TOKEN LIST: ")
         for token in self.token_list:
             print(f"token_value: {token.value} AND token_type: {token.type}")
 
@@ -105,18 +105,36 @@ class Parser(object):
         elif self.peek('identifier') and self.peek('oparen', 1):
             return self.parse_function_call()
         else:
-            return self.parse_var_ref # HUH?
+            return self.parse_var_ref() # HUH?
 
 ############################################################
 # TODO: PARSE FUNCTION CALL
 
     # called in parse_expr
     def parse_function_call(self):
-        name = self.consume('identifier').value
-        #TODO: WORK ON PARSE_EXPRESSION
 
-        new_call_node = CallNode(name, arg_exprs)
-        return new_call_node
+        name = self.consume('identifier').value
+        arg_exprs = self.parse_arg_exprs()
+
+        return CallNode(name, arg_exprs)
+
+    # like parse_arg_names EXCEPT instead of building list of token values
+    # we build a list of sub-trees of nodes
+    def parse_arg_exprs(self):
+        arg_exprs = []
+
+        self.consume('oparen')
+
+        if not self.peek('cparen'):
+            arg_exprs.append(self.parse_expr())
+
+            while(self.peek('comma')):
+                self.consume('comma');
+                arg_exprs.append(self.parse_expr())
+
+        self.consume('cparen')
+
+        return arg_exprs
 
 ############################################################
 

@@ -3,25 +3,39 @@
 
 class Generator(object):
     # is init necessary??
-    # I do call self.generate...
-    # def __init__(self):
-    #     pass
+    def __init__(self, parse_tree):
+        self.parse_tree = parse_tree # why tho?
 
+    # should we make this a static method?
+    # @staticmethod
     def generate(self, node):
+
+        print("IN GENERATE")
+        print("NODE TYPE", type(node).__name__)
+
         # Def Node
         if type(node).__name__ == 'DefNode':
 
             def_function_name = node.name
             def_arg_names = ','.join(node.args)
             body = self.generate(node.body) # recursively generate code
-            return "function {name}({args}){\nreturn {body};\n}".format(name=def_function_name, args=def_arg_names, body=body)
-            # TODO: there's a cleaner way to format string
+            # TODO: find a cleaner way to format string
+            code = "function {name}({args}) {{ \n return {body};\n}}".format(name=def_function_name, args=def_arg_names, body=body)
+            return code
 
         # Call Node
         elif type(node).__name__ == 'CallNode':
-            call_arg_names = node.arg_exprs # what is this a list? string?
-            # recursively generate code
             call_function_name = node.name
+            #TODO: Debug this -- we should output the arg names, NOT the nodes!
+            """
+                # recursively generate code
+                # from list of nodes => list of names
+                # create a list of arg names
+                # for each expr in arg exprs
+                # recursively generate code (self.generate(arg_expr))
+                # join list with comma
+            """
+            call_arg_names = ",".join(map(self.generate, node.arg_exprs))
             code = "{name} {args}".format(name=call_function_name, args=call_arg_names)
             return code
 
