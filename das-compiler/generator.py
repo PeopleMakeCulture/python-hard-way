@@ -14,6 +14,7 @@ class Generator(object):
         print("NODE TYPE", type(node).__name__)
 
         # Def Node
+        # Compile basic structure of JS func with name, args, body
         if type(node).__name__ == 'DefNode':
 
             def_function_name = node.name
@@ -24,6 +25,7 @@ class Generator(object):
             return code
 
         # Call Node
+        # Compile
         elif type(node).__name__ == 'CallNode':
             call_function_name = node.name
             #TODO: Debug this -- we should output the arg names, NOT the nodes!
@@ -35,8 +37,9 @@ class Generator(object):
                 # recursively generate code (self.generate(arg_expr))
                 # join list with comma
             """
-            call_arg_names = ",".join(map(self.generate, node.arg_exprs))
-            code = "{name} {args}".format(name=call_function_name, args=call_arg_names)
+            # take arg_exprs and recursively return JS syntax for arg_exprs
+            call_arg_exprs = ",".join(map(self.generate, node.arg_exprs))
+            code = "{name}({args})".format(name=call_function_name, args=call_arg_exprs)
             return code
 
         # Int Node
