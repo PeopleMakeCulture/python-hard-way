@@ -38,13 +38,16 @@ class Generator(object):
                 # join list with comma
             """
             # take arg_exprs and recursively return JS syntax for arg_exprs
-            call_arg_exprs = ",".join(map(self.generate, node.arg_exprs))
-            code = "{name}({args})".format(name=call_function_name, args=call_arg_exprs)
+            call_arg_exprs = list(map(self.generate, node.arg_exprs))
+            print("call_arg_exprs", (call_arg_exprs))
+            call_arg_exprs_list = ",".join(call_arg_exprs)
+
+            code = "{name}({args})".format(name=call_function_name, args=call_arg_exprs_list)
             return code
 
         # Int Node
         elif type(node).__name__ == 'IntegerNode':
-            return node.value
+            return str(node.value)
 
         # Var Ref Node
         elif type(node).__name__ == 'VarRefNode':
