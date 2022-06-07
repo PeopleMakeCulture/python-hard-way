@@ -8,11 +8,19 @@ class DefNode(object):
         self.args = args
         self.body = body
 
+    def __repr__(self):
+        rep = "DefNode name: {name} args: {args} body: {body}".format(name=self.name , args=self.args , body=self.body )
+        return rep
+
 
 # Good Ol' Ints
 class IntegerNode(object):
     def __init__(self, value):
         self.value = value
+
+    def __repr__(self):
+        rep = "IntegerNode value: {value}".format(value=self.value)
+        return rep
 
 
 # Call nodes represent just the function call
@@ -21,11 +29,18 @@ class CallNode(object):
         self.name = name
         self.arg_exprs = arg_exprs
 
+    def __repr__(self):
+            rep = "CallNode name: {name} arg_exprs:{arg_exprs}".format(name=self.name, arg_exprs=self.arg_exprs)
+            return rep
 
 # Just a var
 class VarRefNode(object):
     def __init__(self, name):
         self.name = name
+
+    def __repr__(self):
+        rep = "VarRefNode name: {name}".format(name=self.name)
+        return rep
 
 
 # Main
@@ -51,9 +66,10 @@ class Parser(object):
 
     #TODO: this was just for testing -can remove later
     def print_token_list(self):
-        print("TOKEN LIST: ")
+        # print("TOKEN LIST: ")
         for token in self.token_list:
             print(f"token_value: {token.value} AND token_type: {token.type}")
+
 
     # returns parse tree
     def parse(self):
@@ -66,7 +82,7 @@ class Parser(object):
     # returns a DefNode
     def parse_def(self):
         # test to check what input is
-        # self.print_token_list()
+        self.print_token_list()
 
         self.consume('def')
 
@@ -126,7 +142,7 @@ class Parser(object):
 
     # like parse_arg_names EXCEPT instead of building list of token values
     # we build a list of sub-trees of nodes
-    # because arg_exprs can contain sub-expressions (eg `g(f(x),y))` )
+    # because arg_exprs can contain sub-expressions (eg `g(x) x` )
     def parse_arg_exprs(self):
         arg_exprs = []
 
