@@ -102,6 +102,7 @@ class Parser(object):
         return arg_names
 
     # called by parse_def
+    # sets DefNode.body
     # recursively returns sub-tree of nodes to represent function expression
     def parse_expr(self):
         if self.peek('integer'):
@@ -125,6 +126,7 @@ class Parser(object):
 
     # like parse_arg_names EXCEPT instead of building list of token values
     # we build a list of sub-trees of nodes
+    # because arg_exprs can contain sub-expressions (eg `g(f(x),y))` )
     def parse_arg_exprs(self):
         arg_exprs = []
 
