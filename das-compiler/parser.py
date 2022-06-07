@@ -45,7 +45,7 @@ class Parser(object):
         if current_token.type == expected_type:
             return current_token
         else:
-            # print(f"Exoected token type {expected_type} but got {current_token.type}")
+            print(f"Exoected token type {expected_type} but got {current_token.type}")
             # better error handling
             raise RuntimeError(f"Expected token type {expected_type} but got {current_token.type}")
 
@@ -58,13 +58,16 @@ class Parser(object):
     # returns parse tree
     def parse(self):
         parse_tree = self.parse_def()
-        # print(parse_tree)
+        print("parse_tree", parse_tree)
         return parse_tree
-        #TODOLATER: can we add more logic here to differetiate parse def vs parse function call?
+        #TODO: can we add more logic here to differetiate parse def vs parse function call?
 
     # called by parse
     # returns a DefNode
     def parse_def(self):
+        # test to check what input is
+        # self.print_token_list()
+
         self.consume('def')
 
         name = self.consume('identifier').value # name of function
@@ -95,17 +98,19 @@ class Parser(object):
                 arg_names.append(self.consume('identifier').value)
 
         self.consume('cparen')
+
         return arg_names
 
     # called by parse_def
     # recursively returns sub-tree of nodes to represent function expression
     def parse_expr(self):
         if self.peek('integer'):
-            return self.parse_int() # simplest case for now
+            return self.parse_int() # simplest case
         elif self.peek('identifier') and self.peek('oparen', 1):
-            return self.parse_function_call()
+            return self.parse_function_call() # potentially recursive case
+        # when identifier not followed by oparen, body contains variables (eg "x + y")
         else:
-            return self.parse_var_ref() # HUH?
+            return self.parse_var_ref()
 
 ############################################################
 # TODO: PARSE FUNCTION CALL
