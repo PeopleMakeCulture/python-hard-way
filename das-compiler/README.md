@@ -21,17 +21,20 @@ To get started:
 2. cd into the repository
 3. run `python3 main.py`
 
-## TODOS:
+## Recurse TODOS:
 
 ### Tokenize
 Relatively bug-free and working as expected
 
 ### Parser
 
-*Recurse Task*: Debug `parse_function_call` in parser.py
+*Task1*: Debug `parse_function_call` in parser.py
 
 ### Generator
-Not yet tested
+*Task*: Debug CallNode generator
+
+### Main
+*Task*: Refactor script to take input code as an xarg
 
 
 
