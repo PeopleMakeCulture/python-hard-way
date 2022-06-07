@@ -1,20 +1,14 @@
 # Notes
 
-## 20 Min Goal:
+#### LOGGING
 
-#### TODOS:
-
-- get tokenizer to work
-    - [x] declared constant
-    - [x] def functions
-    - re-watch video to get logic for "tokenizer()" function
-    - [x] iterate over a string/list
-    - [x] add an error handler
-
-- get parser to work
-    - [] what are my classes? objects? methods? class variables?
+- Q: what numbers does range(n) return?
+    A: Range IS inclusive of 0; NOT inclusive of n
+    Why: useful in for loops:
+    `for i in range (len(array))` will iterate over all indexes in that array
 
 #### Qs:
+- Q: What are capitalization conventions in Python?
 - Q: What /is/ regex? How is it working? What does it compile to?
 - Q: What is python library `re`?
 A: it's the library for working w/ regex
