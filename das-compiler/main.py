@@ -16,9 +16,11 @@ from generator import *
 
 #TODO: update program to take one xarg--the name of a
 # source file with a function to compile
-test_func = 'def f(x, y) g(y,x) end'
+test_func = "def f(x, y) 1 end" # works
+# test_func = 'def f(x, y) g(y,x) end' # missing mustaches
 
 token_list = Tokenizer(test_func).tokenize()
+
 parse_tree = Parser(token_list).parse()
 
 #This is the problem...
