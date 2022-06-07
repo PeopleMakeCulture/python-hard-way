@@ -9,7 +9,7 @@ class Generator(object):
     # should we make this a static method?
     # @staticmethod
     def generate(self, node):
-
+        # testing
         print("IN GENERATE")
         print("NODE TYPE", type(node).__name__)
 
