@@ -3,7 +3,7 @@
 
 import re
 
-# TODOLATER: instead of using a new class/object,
+# TODO: instead of using a new class/object,
 # could I use a better data structure (eg named tuple)?
 
 # use a list of tuples
